@@ -1,6 +1,7 @@
-import FastitfyCors from '@fastify/cors'
-import FastifySwagger from '@fastify/swagger'
-import FastifyScalar from '@scalar/fastify-api-reference'
+import fastitfyCors from '@fastify/cors'
+import fastifyJwt from '@fastify/jwt'
+import fastifySwagger from '@fastify/swagger'
+import fastifyScalar from '@scalar/fastify-api-reference'
 import { fastify } from 'fastify'
 import {
   jsonSchemaTransform,
@@ -9,13 +10,15 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 
+import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
+
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
-app.register(FastitfyCors)
-app.register(FastifySwagger, {
+app.register(fastitfyCors)
+app.register(fastifySwagger, {
   openapi: {
     info: {
       title: 'Next.js Saas',
@@ -26,10 +29,16 @@ app.register(FastifySwagger, {
   },
   transform: jsonSchemaTransform,
 })
-app.register(FastifyScalar, {
+app.register(fastifyScalar, {
   routePrefix: '/docs',
 })
+
+app.register(fastifyJwt, {
+  secret: 'my-jwt-secret',
+})
+
 app.register(createAccount)
+app.register(authenticateWithPassword)
 
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP server running!')
