@@ -14,7 +14,11 @@ import { authenticateWithPassword } from './routes/auth/authenticate-with-passwo
 import { createAccount } from './routes/auth/create-account'
 import { getProfile } from './routes/auth/get-profile'
 
-const app = fastify().withTypeProvider<ZodTypeProvider>()
+const app = fastify({
+  logger: {
+    level: 'error',
+  },
+}).withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
