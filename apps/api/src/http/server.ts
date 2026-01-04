@@ -10,6 +10,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 
+import { errorHandler } from './error-handle'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
 import { getProfile } from './routes/auth/get-profile'
@@ -20,9 +21,11 @@ const app = fastify({
   },
 }).withTypeProvider<ZodTypeProvider>()
 
-app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
-app.register(fastitfyCors)
+app.setSerializerCompiler(serializerCompiler)
+
+app.setErrorHandler(errorHandler)
+
 app.register(fastifySwagger, {
   openapi: {
     info: {
@@ -34,6 +37,7 @@ app.register(fastifySwagger, {
   },
   transform: jsonSchemaTransform,
 })
+
 app.register(fastifyScalar, {
   routePrefix: '/docs',
 })
@@ -41,6 +45,8 @@ app.register(fastifyScalar, {
 app.register(fastifyJwt, {
   secret: 'my-jwt-secret',
 })
+
+app.register(fastitfyCors)
 
 app.register(createAccount)
 app.register(authenticateWithPassword)
