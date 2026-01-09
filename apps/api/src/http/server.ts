@@ -20,6 +20,8 @@ import { requestPasswordRecover } from './routes/auth/request-password-recovery'
 import { resetPassword } from './routes/auth/reset-password'
 import { createOrganization } from './routes/orgs/create-organization'
 import { getMemberShip } from './routes/orgs/get-membership'
+import { getOrganization } from './routes/orgs/get-organization'
+import { getOrganizations } from './routes/orgs/get-organizations'
 
 const app = fastify({
   logger: {
@@ -71,6 +73,8 @@ app.register(resetPassword)
 
 app.register(createOrganization)
 app.register(getMemberShip)
+app.register(getOrganization)
+app.register(getOrganizations)
 
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP server running!')
