@@ -5,6 +5,7 @@
     "dev": "npm run env:load tsx watch src/http/server.ts",
     "dev:infra": "tsx watch src/http/server.ts >> var/logs/api.log 2>&1",
     "db:migrate": "npm run env:load prisma migrate dev",
+    "db:generate": "npm run env:load prisma generate",
     "db:reset": "npm run env:load prisma migrate reset",
     "db:seed": "npm run env:load prisma db seed",
     "db:studio": "npm run env:load prisma studio",

@@ -118,10 +118,10 @@ model Project {
   avatarUrl      String?  @map("avatar_url")
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
-  onwerId        String   @map("owner_id")
+  ownerId        String   @map("owner_id")
   organizationId String   @map("organization_id")
 
-  owner        User         @relation(fields: [onwerId], references: [id])
+  owner        User         @relation(fields: [ownerId], references: [id])
   organization Organization @relation(fields: [organizationId], references: [id])
 
   @@map("projects")
