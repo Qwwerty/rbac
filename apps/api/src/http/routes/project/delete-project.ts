@@ -14,11 +14,11 @@ export async function deleteProject(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .post(
+    .delete(
       '/organizations/:slug/projects/:projectId',
       {
         schema: {
-          tags: ['projects'],
+          tags: ['Projects'],
           summary: 'Delete a project',
           security: [{ bearerAuth: [] }],
           params: z.object({
