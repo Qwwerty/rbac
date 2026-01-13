@@ -28,6 +28,7 @@ import { updateOrganization } from './routes/orgs/update-organization'
 import { createProject } from './routes/project/create-project'
 import { deleteProject } from './routes/project/delete-project'
 import { getProject } from './routes/project/get-project'
+import { getProjects } from './routes/project/get-projects'
 
 const app = fastify({
   logger: {
@@ -88,6 +89,7 @@ app.register(transferOrganization)
 app.register(createProject)
 app.register(deleteProject)
 app.register(getProject)
+app.register(getProjects)
 
 app.listen({ port: 3333 }).then(() => {
   console.log('HTTP server running!')
