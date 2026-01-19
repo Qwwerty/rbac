@@ -30,7 +30,7 @@ function createProject(userIds: string[]) {
     slug: faker.lorem.slug(5),
     description: faker.lorem.paragraph(),
     avatarUrl: faker.image.avatarGitHub(),
-    onwerId: faker.helpers.arrayElement(userIds),
+    ownerId: faker.helpers.arrayElement(userIds),
   }
 }
 
