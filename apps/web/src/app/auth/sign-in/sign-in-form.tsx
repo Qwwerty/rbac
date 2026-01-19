@@ -3,7 +3,6 @@
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FormEvent, useState, useTransition } from 'react'
 
 import githubIcon from '@/assets/github-icon.svg'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -11,54 +10,23 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { useFormState } from '@/hooks/use-form-state'
 
 import { signInWithEmailAndPassword } from './actions'
 
-interface IFieldError {
-  errors: string[]
-}
-
-interface IValidationErrors {
-  errors: string[]
-  properties?: {
-    email?: IFieldError
-    password?: IFieldError
-  }
-}
-
-interface IFormState {
-  success: boolean
-  message: string | null
-  errors: IValidationErrors | null
-}
-
 export function SignInForm() {
-  const [isPending, startTransition] = useTransition()
-  const [formState, setFormState] = useState<IFormState>({
-    success: false,
-    message: null,
-    errors: null,
-  })
-
-  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
-    const form = event.currentTarget
-    const data = new FormData(form)
-    startTransition(async () => {
-      const state = await signInWithEmailAndPassword(data)
-      setFormState(state)
-    })
-  }
+  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
+    signInWithEmailAndPassword,
+  )
 
   return (
-    <form onSubmit={handleSignIn} className="space-y-4">
-      {formState.success === false && formState.message && (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {success === false && message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
           <AlertTitle>Sign in failed!</AlertTitle>
           <AlertDescription>
-            <p>{formState.message}</p>
+            <p>{message}</p>
           </AlertDescription>
         </Alert>
       )}
@@ -67,9 +35,9 @@ export function SignInForm() {
         <Label htmlFor="email">E-mail</Label>
         <Input name="email" type="email" id="email" />
 
-        {formState.errors?.properties?.email && (
+        {errors?.properties?.email && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {formState.errors.properties.email.errors[0]}
+            {errors.properties.email.errors[0]}
           </p>
         )}
       </div>
@@ -77,9 +45,9 @@ export function SignInForm() {
         <Label htmlFor="password">Password</Label>
         <Input name="password" type="password" id="password" />
 
-        {formState.errors?.properties?.password && (
+        {errors?.properties?.password && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {formState.errors.properties.password.errors[0]}
+            {errors.properties.password.errors[0]}
           </p>
         )}
 
