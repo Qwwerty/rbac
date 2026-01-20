@@ -6,10 +6,7 @@ interface IFieldError {
 
 interface IValidationErrors {
   errors: string[]
-  properties?: {
-    email?: IFieldError
-    password?: IFieldError
-  }
+  properties?: Record<string, IFieldError>
 }
 
 interface IFormState {
