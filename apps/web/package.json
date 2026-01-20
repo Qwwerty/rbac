@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run env:load next dev --turbo",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.8",
