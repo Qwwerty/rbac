@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useFormState } from '@/hooks/use-form-state'
 
+import { signInWithGithub } from '../actions'
 import { signInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
@@ -64,6 +65,7 @@ export function SignInForm() {
           Forgot your password?
         </Link>
       </div>
+
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? (
           <Loader2 className="size-4 animate-spin" />
@@ -71,11 +73,19 @@ export function SignInForm() {
           'Sign in with e-mail'
         )}
       </Button>
+
       <Button variant="link" className="w-full" size="sm" asChild>
         <Link href="/auth/sign-up">Create new account</Link>
       </Button>
+
       <Separator />
-      <Button type="submit" variant="outline" className="w-full">
+
+      <Button
+        type="button"
+        onClick={signInWithGithub}
+        variant="outline"
+        className="w-full"
+      >
         <Image src={githubIcon} className="mr-2 size-4 dark:invert" alt="" />
         Sign in with GitHub
       </Button>
