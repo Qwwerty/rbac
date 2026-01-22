@@ -38,7 +38,7 @@ export function SignInForm() {
         </Alert>
       )}
 
-      <div className="space-y-1">
+      <div className="space-y-2">
         <Label htmlFor="email">E-mail</Label>
         <Input name="email" type="email" id="email" />
 
@@ -48,7 +48,7 @@ export function SignInForm() {
           </p>
         )}
       </div>
-      <div className="space-y-1">
+      <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <Input name="password" type="password" id="password" />
 
