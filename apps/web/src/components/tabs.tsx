@@ -7,7 +7,7 @@ export async function Tabs() {
   const currentOrg = await getCurrentOrg()
 
   return (
-    <div className="border-b py-2">
+    <div className="border-b py-6">
       <nav className="mx-auto flex max-w-300 items-center gap-2">
         <Button
           asChild
