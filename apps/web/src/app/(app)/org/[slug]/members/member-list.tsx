@@ -10,6 +10,8 @@ import { getMembers } from '@/http/get-members'
 import { getMembership } from '@/http/get-membership'
 import { getOrganization } from '@/http/get-organization'
 
+import { RemoveMemberButton } from './remove-member-button'
+
 export async function MemberList() {
   const currentOrg = await getCurrentOrg()
   const permissions = await ability()
@@ -72,6 +74,18 @@ export async function MemberList() {
                           <ArrowLeftRight className="mr-2 size-4" />
                           Transfer ownership
                         </Button>
+                      )}
+
+                      {permissions?.can('delete', 'User') && (
+                        <RemoveMemberButton
+                          memberEmail={member.email!}
+                          memberId={member.id}
+                          memberName={member.name!}
+                          disabled={
+                            member.userId === membership.userId ||
+                            member.userId === organization.ownerId
+                          }
+                        />
                       )}
                     </div>
                   </TableCell>
