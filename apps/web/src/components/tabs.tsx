@@ -37,19 +37,18 @@ export async function Tabs() {
           </Button>
         )}
 
-        {canUpdateOrganization ||
-          (canGetBilling && (
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="data-[current=true]:border-border text-muted-foreground data-[current=true]:text-foreground border border-transparent"
-            >
-              <NavLink href={`/org/${currentOrg}/settings`}>
-                Settings & Billing
-              </NavLink>
-            </Button>
-          ))}
+        {(canUpdateOrganization || canGetBilling) && (
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="data-[current=true]:border-border text-muted-foreground data-[current=true]:text-foreground border border-transparent"
+          >
+            <NavLink href={`/org/${currentOrg}/settings`}>
+              Settings & Billing
+            </NavLink>
+          </Button>
+        )}
       </nav>
     </div>
   )
