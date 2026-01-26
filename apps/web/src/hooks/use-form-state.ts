@@ -1,4 +1,5 @@
 import { FormEvent, useState, useTransition } from 'react'
+import { requestFormReset } from 'react-dom'
 
 interface IFieldError {
   errors: string[]
@@ -39,8 +40,8 @@ export function useFormState(
 
       if (state.success === true && onSuccess) {
         await onSuccess()
+        requestFormReset(form)
       }
-
       setFormState(state)
     })
   }

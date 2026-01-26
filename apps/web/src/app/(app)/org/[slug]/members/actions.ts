@@ -1,12 +1,60 @@
 'use server'
 
-import type { Role } from '@saas/auth'
+import { type Role, roleSchema } from '@saas/auth'
+import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
+import z from 'zod'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { createInvite } from '@/http/create-invite'
 import { removeMember } from '@/http/remove-member'
 import { revokeInvite } from '@/http/revoke-invite'
 import { updateMember } from '@/http/update-member'
+
+const inviteSchema = z.object({
+  email: z.email('Invalid e-mail address.'),
+  role: roleSchema,
+})
+
+export async function createInviteAction(data: FormData) {
+  const result = inviteSchema.safeParse(Object.fromEntries(data))
+
+  if (!result.success) {
+    const errors = z.treeifyError(result.error)
+    return { success: false, message: null, errors }
+  }
+
+  const { email, role } = result.data
+
+  try {
+    const currentOrg = await getCurrentOrg()
+
+    await createInvite({
+      org: currentOrg!,
+      email,
+      role,
+    })
+
+    revalidateTag(`${currentOrg}/invites`, { expire: 0 })
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const { message } = await error.response.json()
+      return { success: false, message, errors: null }
+    }
+    console.log(error)
+    return {
+      success: false,
+      message: 'Unexpected error, try again in a few minutes',
+      errors: null,
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Successfully created the invite',
+    errors: null,
+  }
+}
 
 export async function removeMemberAction(memberId: string) {
   const currentOrg = await getCurrentOrg()
