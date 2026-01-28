@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import githubIcon from '@/assets/github-icon.svg'
+import googleIcon from '@/assets/google-icon.svg'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,7 +14,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useFormState } from '@/hooks/use-form-state'
 
-import { signInWithGithub } from '../actions'
+import { signInWithGithub, signInWithGoogle } from '../actions'
 import { signInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
@@ -85,6 +86,16 @@ export function SignInForm() {
       </Button>
 
       <Separator />
+
+      <Button
+        type="button"
+        onClick={signInWithGoogle}
+        variant="outline"
+        className="w-full"
+      >
+        <Image src={googleIcon} className="mr-2 size-4" alt="" />
+        Sign in with Google
+      </Button>
 
       <Button
         type="button"

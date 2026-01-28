@@ -15,3 +15,20 @@ export async function signInWithGithub() {
 
   redirect(githubSignInURL.toString())
 }
+
+export async function signInWithGoogle() {
+  const googleSignInURL = new URL(
+    'o/oauth2/v2/auth',
+    'https://accounts.google.com',
+  )
+
+  googleSignInURL.searchParams.set('client_id', env.GOOGLE_OAUTH_CLIENT_ID)
+  googleSignInURL.searchParams.set(
+    'redirect_uri',
+    env.GOOGLE_OAUTH_CLIENT_REDIRECT_URI,
+  )
+  googleSignInURL.searchParams.set('response_type', 'code')
+  googleSignInURL.searchParams.set('scope', 'openid email profile')
+
+  redirect(googleSignInURL.toString())
+}
